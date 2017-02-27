@@ -1,6 +1,6 @@
 ﻿<#
 Changelog:
-v2 - added warnings at 4 and 10 minutes.
+v2 - added warnings at 2 and 5 minutes.
      added comments
 #>
 
