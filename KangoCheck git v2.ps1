@@ -5,7 +5,7 @@ v2 - added warnings at 2 and 5 minutes.
 #>
 
 $credentials = Get-credential
-New-PSDrive -Name KangoPrintQueue -PSProvider FileSystem -Root \\gbd1kango.krohnegroup.com\c$\printoutput -Credential $credentials | out-null
+New-PSDrive -Name KangoPrintQueue -PSProvider FileSystem -Root \\<servername>\c$\printoutput -Credential $credentials | out-null
 ""
 "==========================="
 ""
