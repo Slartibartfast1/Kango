@@ -5,7 +5,7 @@ v2 - added warnings at 2 and 5 minutes.
 #>
 
 $credentials = Get-credential
-New-PSDrive -Name KangoPrintQueue -PSProvider FileSystem -Root \\<servername>\c$\printoutput -Credential $credentials | out-null
+New-PSDrive -Name KangoPrintQueue -PSProvider FileSystem -Root \\gbd1kango.krohnegroup.com\c$\printoutput -Credential $credentials | out-null
 ""
 "==========================="
 ""
@@ -23,28 +23,13 @@ function kangoCheck # Constantly check queue length
                 Write-Host "WARNING: Print queue has not decreased for 2 minutes" -ForegroundColor Yellow          # Print warning message to screen in yellow
             } elseif ( $crashCount -gt 9 ) {     # If error counter reaches 10 (10x30s = 5 minutes)
                 Write-Host "WARNING: Print queue has not decreased for >5 minutes" -ForegroundColor Red             # Print warning message to screen in red
-                Write-Host "Restarting Services" -ForegroundColor Red
-                kangoRestart
+                Write-Host "Go restart services right now!" -ForegroundColor Red
             }
         }
         [string]$count + " files in Kango print queue"
         $files = $count
         Start-Sleep -s 30                         # Wait 30s
         }
-}
-
-function kangoRestart ### NOT TESTED ###
-{
-    Write-host "Stopping PrintPackHostService..."
-    Get-Service -Name PrintPackHostService -ComputerName GBD1KANGO | Set-Service -Status Stopped
-    Write-host "Stopping PrintPackServerService..."
-    Get-Service -Name PrintPackServerService -ComputerName GBD1KANGO | Set-Service -Status Stopped
-    Write-Host "Services Stopped"
-    Write-host "Starting PrintPackHostService..."
-    Get-Service -Name PrintPackHostService -ComputerName GBD1KANGO | Set-Service -Status Running
-    Write-host "Starting PrintPackHostService..."
-    Get-Service -Name PrintPackServerService -ComputerName GBD1KANGO | Set-Service -Status Running
-    Write-Host "Services Started"
 }
 
 kangoCheck
